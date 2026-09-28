@@ -56,7 +56,7 @@ library Agent1 {
             VISOR,
             "\"/><path d=\"M-17-50v-6\" stroke=\"",
             SHELL,
-            "\" stroke-width=\"2\"/><circle cx=\"-17\" cy=\"-58\" r=\"2.5\" fill=\"",
+            "\" stroke-width=\"2\"/><circle cx=\"-17\" cy=\"-57.5\" r=\"2.5\" fill=\"",
             ACCENT,
             "\"/>"
         );

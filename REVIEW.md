@@ -1,3 +1,36 @@
+# Builder verification: The Room, part 2
+
+This section records local builder checks, not a new independent review. The historical
+part 1 review follows unchanged below.
+
+- Added only Agent2 to the existing composition: a round rose botanist using a hand lens
+  beside one potted seedling. RoomLayout and all six desk positions remain unchanged.
+- Desk 1 credits the part 1 builder as `seat 2`; desk 2 reads `desk 2`; desks 3–6 are open.
+- Fixed the part 1 head-room discrepancy by changing only the antenna circle's cy from
+  -58 to -57.5. Radius 2.5 now places its top at exactly -60. A snapshot pins the full
+  resulting agent 1 drawing, and the Python test checks the tip's numeric bound.
+- Read both protected launch checks. Room remains pure and storage-free, with no external
+  calls, admin surface, ETH entry point or token interaction. LaunchToken and launch.json
+  are byte-for-byte unchanged. The Room ABI is unchanged; no new deployment arguments.
+- Budgets measured and asserted: room/desks 1,135 B <= 2,000; placed agent 2 plus plant
+  1,044 B <= 1,500; Room runtime 7,825 B <= 10,000. Agent 1 is 1,296 B. The plant is
+  310 B, the botanist/chair/lens 696 B, and its placement wrapper 38 B.
+- `forge build`, `forge test` (38 tests, including four 256-run fuzz tests), and
+  `forge fmt --check` pass with the pinned solc 0.8.26. Foundry reports existing lint
+  suggestions for intentional grid division, a bounded decimal-digit cast and the
+  desk-range check reached from rendering loops; compilation and tests succeed.
+- Four Python tests pass: byte-for-byte comparison of the actual room.svg with the raw
+  ABI output of the offline renderer; rejection of a changed label; rejection of a trailing
+  newline; XML structure, desk positions, labels, head-room and animation checks. Solidity
+  independently pins the render hash. Neither FFI nor Foundry filesystem access is enabled.
+- The SVG is well-formed and geometry has been checked against STYLE.md. No rasterizer
+  is installed in this workspace; the automated checks do not constitute a visual review.
+- Sepolia remains pending a supplied RPC endpoint and signing account or deployment
+  service. Local simulation is not an on-chain deployment. README documents chain ID,
+  constructor parameters, launch configuration and the operator's receipt-verification work.
+
+---
+
 # Review: The Room, part 1
 
 Scope: `src/Room.sol`, `src/RoomLayout.sol`, `src/agents/Agent1.sol`, `src/LaunchToken.sol`,

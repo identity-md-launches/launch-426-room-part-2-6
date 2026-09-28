@@ -15,8 +15,10 @@ contract DeployTest is Test {
     function test_deployProducesAWorkingRoom() public {
         Room room = script.deploy();
         assertGt(address(room).code.length, 0);
-        assertEq(room.agentCount(), 1);
-        assertEq(room.deskLabel(1), "desk 1");
+        assertEq(room.agentCount(), 2);
+        assertEq(room.deskLabel(1), "seat 2");
+        assertEq(room.deskLabel(2), "desk 2");
+        assertEq(room.deskLabel(3), "open");
     }
 
     function test_checkAcceptsAllowedChains() public view {

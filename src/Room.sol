@@ -3,11 +3,12 @@ pragma solidity 0.8.26;
 
 import {RoomLayout} from "./RoomLayout.sol";
 import {Agent1} from "./agents/Agent1.sol";
+import {Agent2} from "./agents/Agent2.sol";
 
-/// @title The Room, part 1 of 6
+/// @title The Room, part 2 of 6
 /// @notice A value-free contract that draws a room of AI agents at work as on-chain SVG.
 ///         Six desks at fixed positions, each with a nameplate. Desk 1 is occupied by one
-///         agent working at a computer; desks 2 to 6 are open.
+///         agent working at a computer, desk 2 has a botanist; desks 3 to 6 are open.
 /// @dev No storage, no owner, no setters, no external calls, no ETH. Every function is
 ///      `pure`, so the output is fixed at compile time and identical on every call.
 ///
@@ -23,7 +24,7 @@ contract Room {
     uint256 public constant DESKS = RoomLayout.DESKS;
 
     /// @notice Number of occupied desks. Desks 1..AGENTS have an agent; the rest are open.
-    uint256 internal constant AGENTS = 1;
+    uint256 internal constant AGENTS = 2;
 
     /// @notice Raised for a desk number outside 1..DESKS.
     error NoSuchDesk(uint256 desk);
@@ -42,9 +43,11 @@ contract Room {
         return AGENTS;
     }
 
-    /// @notice Nameplate text for `desk` (1-based): "desk N" when occupied, "open" otherwise.
+    /// @notice Desk 1 credits part 1's builder as "seat 2"; other occupied desks read
+    ///         "desk N", and unoccupied desks read "open". Desk numbers are 1-based.
     function deskLabel(uint256 desk) public pure returns (string memory) {
         _checkDesk(desk);
+        if (desk == 1) return "seat 2";
         if (desk > AGENTS) return "open";
         return string.concat("desk ", RoomLayout.str(desk));
     }
@@ -73,6 +76,7 @@ contract Room {
     /// @dev One line per agent. Later parts add a branch here and nowhere else.
     function _agentDrawing(uint256 desk) internal pure returns (string memory) {
         if (desk == 1) return Agent1.draw();
+        if (desk == 2) return Agent2.draw();
         return "";
     }
 
